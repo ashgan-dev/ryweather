@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Chart.js Line Chart</title>
+        <script src="{{url_for('static', filename='Chart.min.js')}}"></script>
+    </head>
+    <body>
+    {{ data }}
+    <div>
+        <canvas id="myChart"></canvas>
+    </div>
+    <script>
+          var ctx = document.getElementById('myChart').getContext('2d');
+
+          var myChart = new Chart(ctx, {
+              type: 'line',
+              data: {
+                  labels: {{ data['cycles'] }},
+                  datasets: [{
+                      data:  {{ data['terre'] }},
+                      label: "Prime Racines",
+                      borderColor: "#000000",
+                      backgroundColor: "#000000",
+                      fill: false,
+                      tension: 0,
+                  },
+                  {
+                      data:  {{ data['tryker'] }},
+                      label: "Lacs",
+                      borderColor: "#0904F8",
+                      backgroundColor: "#0904F8",
+                      fill: false,
+                      tension: 0,
+                  },
+                  {
+                      data:  {{ data['fyros'] }},
+                      label: "Desert",
+                      borderColor: "#F85F04",
+                      backgroundColor: "#F85F04",
+                      fill: false,
+                      tension: 0,
+                  },
+                  {
+                      data:  {{ data['zorai'] }},
+                      label: "Jungle",
+                      borderColor: "#9D04F8",
+                      backgroundColor: "#9D04F8",
+                      fill: false,
+                      tension: 0,
+                  },
+                  {
+                      data:  {{ data['matis'] }},
+                      label: "Foret",
+                      borderColor: "#04F807",
+                      backgroundColor: "#04F807",
+                      fill: false,
+                      tension: 0,
+                  },
+                  {
+                      data:  {{ data['nexus'] }},
+                      label: "Nexus",
+                      borderColor: "#F8047D",
+                      backgroundColor: "#F8047D",
+                      fill: false,
+                      tension: 0,
+                  },
+                  {
+                      data:  {{ data['sources'] }},
+                      label: "Sources Interdites",
+                      borderColor: "#ADF804",
+                      backgroundColor: "#ADF804",
+                      fill: false,
+                      tension: 0,
+                  }
+                ]
+              },
+            });
+
+    </script>
+    </body>
+</html>
