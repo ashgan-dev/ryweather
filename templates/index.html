@@ -1,82 +1,144 @@
-<!DOCTYPE html>
-<html>
-    <head>
+
+
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <!-- Required meta tags -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Chart.js Line Chart</title>
+        <!--Chart.js JS CDN--> 
         <script src="{{url_for('static', filename='Chart.min.js')}}"></script>
+    	<!-- Bootstrap CSS -->
+    		<link rel="stylesheet" href="{{url_for('static', filename='bootstrap.min.css')}}" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    		<link rel="stylesheet" href="{{url_for('static', filename='test.css')}}">
+    	<link rel="icon" href="{{url_for('static', filename='logoTab.png')}}">
+     
+    <title>Météo d'Atys</title>
+     
+     
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='theme.css')}}">
     </head>
-    <body>
-    <div>
-        <canvas id="myChart"></canvas>
-    </div>
-    <script>
-          var ctx = document.getElementById('myChart').getContext('2d');
-
+      <body>
+      <nav class="navbar navbar-dark bg-dark">
+    	  <a class="navbar-brand" href="#"> 	
+    	  <img src="{{url_for('static', filename='testLogo.png')}}" width="18%" class="d-inline-block align-top" alt="">
+     
+    		Météo d'Atys
+    	  </a>
+    	</nav>
+     
+        <div class="divChart" >
+    	<canvas id="myChart" ></canvas>
+        </div>
+        
+        <script>
+           var ctx = document.getElementById('myChart').getContext('2d');
+    	   var gradientStroke = ctx.createLinearGradient(1500, 0, 100, 0);
+    		gradientStroke.addColorStop(0, "#6073FF");
+    		gradientStroke.addColorStop(0.3333, '#FFF054');
+    		gradientStroke.addColorStop(0.6666, '#77FF79');
+    		gradientStroke.addColorStop(1, "#FF4637");
+    		
+    		var tabMinutes = [];
+    		var minutes =0
+    		for(var i =0;i<=80;i++){
+    			let hours = Math.floor(minutes/60)
+    			let mins = minutes%60
+    			let time = hours +'h'+mins+'m';
+    			console.log(time);
+    			tabMinutes.push(time);
+    			minutes+=3;
+    		}
+    		
+           
           var myChart = new Chart(ctx, {
               type: 'line',
               data: {
-                  labels: {{ data['cycles'] }},
-                  datasets: [{
-                      data:  {{ data['terre'] }},
-                      label: "Prime Racines",
-                      borderColor: "#000000",
-                      backgroundColor: "#000000",
-                      fill: false,
-                      tension: 0,
+                labels: {{ data['cycles']|tojson }},
+                datasets: [{ 
+                    data: {{ data['terre'] }},
+                    label: "Primes racines",
+                          borderColor: "#222222",
+                          backgroundColor: "#222222",
+                          fill: false,
+                          tension: 0,
+                  },{ 
+                    data: {{ data['tryker'] }},
+                    label: "Lacs",
+                          borderColor: "#6073FF",
+                          backgroundColor: "#6073FF",
+                          fill: false,
+                          tension: 0,
                   },
-                  {
-                      data:  {{ data['tryker'] }},
-                      label: "Lacs",
-                      borderColor: "#0904F8",
-                      backgroundColor: "#0904F8",
-                      fill: false,
-                      tension: 0,
+    			  { 
+                    data: {{ data['fyros'] }},
+                    label: "Desert",
+                          borderColor: "#FF7B42",
+                          backgroundColor: "#FF7B42",
+                          fill: false,
+                          tension: 0,
                   },
-                  {
-                      data:  {{ data['fyros'] }},
-                      label: "Desert",
-                      borderColor: "#F85F04",
-                      backgroundColor: "#F85F04",
-                      fill: false,
-                      tension: 0,
+    			  { 
+                    data: {{ data['zorai'] }},
+                     label: "Jungle",
+                          borderColor: "#E25DFF",
+                          backgroundColor: "#E25DFF",
+                          fill: false,
+                          tension: 0,
                   },
-                  {
-                      data:  {{ data['zorai'] }},
-                      label: "Jungle",
-                      borderColor: "#9D04F8",
-                      backgroundColor: "#9D04F8",
-                      fill: false,
-                      tension: 0,
+    			  { 
+                    data: {{ data['matis'] }},
+                    label: "Foret",
+                          borderColor: "#77FF79",
+                          backgroundColor: "#77FF79",
+                          fill: false,
+                          tension: 0,
                   },
-                  {
-                      data:  {{ data['matis'] }},
-                      label: "Foret",
-                      borderColor: "#04F807",
-                      backgroundColor: "#04F807",
-                      fill: false,
-                      tension: 0,
+    			  { 
+                    data: {{ data['nexus'] }},
+                    label: "Nexus",
+                          borderColor: "#FAF257",
+                          backgroundColor: "#FAF257",
+                          fill: false,
+                          tension: 0,
                   },
-                  {
-                      data:  {{ data['nexus'] }},
-                      label: "Nexus",
-                      borderColor: "#F8047D",
-                      backgroundColor: "#F8047D",
-                      fill: false,
-                      tension: 0,
-                  },
-                  {
-                      data:  {{ data['sources'] }},
-                      label: "Sources Interdites",
-                      borderColor: "#ADF804",
-                      backgroundColor: "#ADF804",
-                      fill: false,
-                      tension: 0,
-                  }
+    			  
                 ]
               },
+              options: {
+    		  		maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            Min: 0,
+                            Max: 100
+                        },
+    					yAxes: [{
+    					ticks: {
+    						beginAtZero: true,
+    						stepSize: 16.66,
+    						min: 0,
+    						max: 100
+    					}
+    				}]
+                    },
+    				elements: {
+                        point:{
+                            radius: 0
+                        }
+                    }
+                },
             });
+        </script>
+    	
+    	    <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="{{url_for('static', filename='jquery-3.3.1.slim.min.js')}}" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="{{url_for('static', filename='popper.min.js')}}" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="{{url_for('static', filename='bootstrap.min.js')}}" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+     
+     
+      
+      
+      </body>
+    </html>
 
-    </script>
-    </body>
-</html>
