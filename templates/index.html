@@ -4,8 +4,10 @@
         <!-- Required meta tags -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="refresh" content="60">
         <!-- Chart.js JS -->
         <script src="{{url_for('static', filename='Chart.min.js')}}"></script>
+        <script src="{{url_for('static', filename='chartjs-plugin-crosshair.js')}}"></script>
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="{{url_for('static', filename='bootstrap.min.css')}}" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <link rel="stylesheet" href="{{url_for('static', filename='theme.css')}}">
@@ -37,49 +39,50 @@
                 type: 'line',
                 data: {
                     labels: {{ data['cycles']|tojson }},
-                    datasets: [{
-                        data: {{ data['terre'] }},
-                        label: "Primes racines",
-                        borderColor: "#222222",
-                        backgroundColor: "#222222",
-                        fill: false,
-                        tension: 0,
-                        },{
-                        data: {{ data['tryker'] }},
-                        label: "Lacs",
-                        borderColor: "#6073FF",
-                        backgroundColor: "#6073FF",
-                        fill: false,
-                        tension: 0,
-                        },{
-                        data: {{ data['fyros'] }},
-                        label: "Desert",
-                        borderColor: "#FF7B42",
-                        backgroundColor: "#FF7B42",
-                        fill: false,
-                        tension: 0,
-                        },{
-                        data: {{ data['zorai'] }},
-                        label: "Jungle",
-                        borderColor: "#E25DFF",
-                        backgroundColor: "#E25DFF",
-                        fill: false,
-                        tension: 0,
-                        },{
-                        data: {{ data['matis'] }},
-                        label: "Foret",
-                        borderColor: "#77FF79",
-                        backgroundColor: "#77FF79",
-                        fill: false,
-                        tension: 0,
-                        },{
-                        data: {{ data['nexus'] }},
-                        label: "Nexus",
-                        borderColor: "#FAF257",
-                        backgroundColor: "#FAF257",
-                        fill: false,
-                        tension: 0,
-                        },]
+                    datasets: [
+                        {data: {{ data['terre'] }},
+                            label: "Primes racines",
+                            borderColor: "#222222",
+                            backgroundColor: "#222222",
+                            fill: false,
+                            tension: 0,
+                        },
+                        {data: {{ data['tryker'] }},
+                            label: "Lacs",
+                            borderColor: "#6073FF",
+                            backgroundColor: "#6073FF",
+                            fill: false,
+                            tension: 0,
+                        },
+                        {data: {{ data['fyros'] }},
+                            label: "Desert",
+                            borderColor: "#FF7B42",
+                            backgroundColor: "#FF7B42",
+                            fill: false,
+                            tension: 0,
+                        },
+                        {data: {{ data['zorai'] }},
+                            label: "Jungle",
+                            borderColor: "#E25DFF",
+                            backgroundColor: "#E25DFF",
+                            fill: false,
+                            tension: 0,
+                        },
+                        {data: {{ data['matis'] }},
+                            label: "Foret",
+                            borderColor: "#77FF79",
+                            backgroundColor: "#77FF79",
+                            fill: false,
+                            tension: 0,
+                        },
+                        {data: {{ data['nexus'] }},
+                            label: "Nexus",
+                            borderColor: "#FAF257",
+                            backgroundColor: "#FAF257",
+                            fill: false,
+                            tension: 0,
+                        },
+                    ]
                 },
                 options: {
                     maintainAspectRatio: false,
@@ -101,9 +104,41 @@
                         point:{
                             radius: 0
                             }
-                        }
+                        },
+                    tooltips: {
+                        mode: 'interpolate',
+                        intersect: false
                     },
-                });
+                },
+                plugins: {
+                    crosshair: {
+                        line: {
+                        color: '#F66',        // crosshair line color
+                        width: 1,             // crosshair line width
+                        dashPattern: [5, 5]   // crosshair line dash pattern
+                        },
+                        sync: {
+                            enabled: true,            // enable trace line syncing with other charts
+                            group: 1,                 // chart group
+                            suppressTooltips: false   // suppress tooltips when showing a synced tracer
+                        },
+                        zoom: {
+                            enabled: false,                                      // enable zooming
+                            zoomboxBackgroundColor: 'rgba(66,133,244,0.2)',     // background color of zoom box
+                            zoomboxBorderColor: '#48F',                         // border color of zoom box
+                            zoomButtonText: 'Reset Zoom',                       // reset zoom button text
+                            zoomButtonClass: 'reset-zoom',                      // reset zoom button class
+                        },
+                        callbacks: {
+                            beforeZoom: function(start, end) {                  // called before zoom, return false to prevent zoom
+                                return true;
+                            },
+                            afterZoom: function(start, end) {                   // called after zoom
+                            }
+                        }
+                    }
+                }
+            });
         </script>
         <!-- Optional JavaScript -->
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
